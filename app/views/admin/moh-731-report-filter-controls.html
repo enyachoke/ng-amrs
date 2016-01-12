@@ -1,4 +1,3 @@
-
 <div class="well" style="padding:2px; cursor:pointer; margin-bottom: 2px !important;">
     <div data-ng-click="isExpanded = !isExpanded" style="margin: 2px;">
         <strong>Report Filters</strong>
@@ -58,8 +57,8 @@
                 <div class="input-group" ng-show="selectedLocations.selectedAll === true">
                     <strong class="text-info">All Locations selected</strong>
                 </div>
-                <div ng-hide="isBusy" class="input-group">
-                    <button class="btn btn-default" ng-click="handleSelectAllTongle()" style="margin-top: 2px;">
+                <div class="input-group">
+                    <button ng-hide="isBusy||experiencedLoadingErrors" class="btn btn-default" ng-click="handleSelectAllTongle()" style="margin-top: 2px;">
                         <span  ng-hide="selectedLocations.selectedAll === true" >Select All</span>
                         <span  ng-show="selectedLocations.selectedAll === true" >Unselect All</span>
                     </button>

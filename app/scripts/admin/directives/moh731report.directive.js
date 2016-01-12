@@ -7,7 +7,7 @@
 
     angular
             .module('app.admin')
-            .directive('statsHivSummaryVisualFilters',directive);
+            .directive('moh731ReportFilters',directive);
 
     function directive(){
         return {
@@ -19,15 +19,14 @@
                 selectedProvider:"=",
                 enabledControls:"="
             },
-            controller:hivSummaryVisualFilterController,
-            link:hivSummaryFilterLink,
-            templateUrl:"views/admin/hiv-summary-visual-filter-controls.html"
+            controller:moh731ReportFilterController,
+            templateUrl:"views/admin/moh-731-report-filter-controls.html"
         };
     }
 
-    hivSummaryVisualFilterController.$inject=['$scope','$rootScope','SearchDataService','moment','$state','$filter','CachedDataService','OpenmrsRestService','LocationModel'];
+    moh731ReportFilterController.$inject=['$scope','$rootScope','SearchDataService','moment','$state','$filter','CachedDataService','OpenmrsRestService','LocationModel'];
 
-    function hivSummaryVisualFilterController($scope,$rootScope,SearchDataService,moment,$state,$filter,CachedDataService,OpenmrsRestService,LocationModel){
+    function moh731ReportFilterController($scope,$rootScope,SearchDataService,moment,$state,$filter,CachedDataService,OpenmrsRestService,LocationModel){
         $scope.forms=[];
         $scope.selectedForms={};
         $scope.selectedForms.selected=[];
@@ -38,11 +37,13 @@
         $scope.locationSelected=locationSelected;
         $scope.handleSelectAllTongle=handleSelectAllTongle;
 
+
         $scope.providers=[];
         $scope.selectedProvider={};
         $scope.selectedProvider.selected={};
         $scope.findProviders=findProviders;
         $scope.fetchLocations=fetchLocations;
+
         $scope.preLoad=preLoad;
         $scope.findingProvider=false;
         $scope.canView=canView;
@@ -55,15 +56,11 @@
         preLoad();
 
         function preLoad(){
-           // loadForms();
+            //loadForms();
             fetchLocations();
 
         }
 
-
-        function loadForms(){
-            $scope.forms=CachedDataService.getCachedPocForms();
-        }
 
         function canView(param){
             return $scope.enabledControls.indexOf(param)>-1;
@@ -107,20 +104,36 @@
                     onGetLocationsError,true);
         }
         function onGetLocationsSuccess(locations){
-            $scope.isBusy=false;
+            //  $scope.isBusy=false;
             $scope.locations=wrapLocations(locations);
 
         }
         function onGetLocationsError(error){
             $scope.isBusy=false;
+            console.log("error on locations called");
+            //$scope.$parent.experiencedLoadingErrors=true;
+           // $scope.experiencedLoadingErrors=true;
         }
         function wrapLocations(locations){
             var wrappedLocations=[];
+            var locationsFetched=1;
             for(var i=0;i<locations.length;i++){
-
                 locationService.getLocationByUuidFromEtlOrCatch(locations[i].uuid,true,function(success){
+                  //  console.log("Success on  position"+locationsFetched+"OF"+locations.length)
+
+                    if(locations.length===locationsFetched){
+                        $scope.isBusy=false;
+
+                    }
+                    locationsFetched++;
                 },function(error){
-                    console.log("error"+error);
+
+                    if(locations.length===locationsFetched){
+
+                        $scope.isBusy=false;
+                    }
+                  //  console.log("Error on  position"+locationsFetched+"OF"+locations.length)
+                    locationsFetched++;
                 });
                 var wrapped=wrapLocation(locations[i]);
                 wrapped.index=i;
@@ -133,22 +146,24 @@
         function wrapLocation(location){
             return new LocationModel.toWrapper(location);
         }
-//signifies    location  selection   copleat
-//set  selected  parameters  to parent  scope
+        //signifies    location  selection   copleat
+        //set  selected  parameters  to parent  scope
         function locationSelected(){
-            $scope.$parent.summaryVisualizationDone=false;
+            $scope.$parent.reportGeneratione=false;
             $scope.$parentnoresults=false;
-//test  if  all  locations  were  selected
+            //test  if  all  locations  were  selected
+
             if($scope.selectedLocations.selectedAll===true){
+
+
                 $scope.$parent.selectedSearchLocations=[];
                 angular.forEach(CachedDataService.getCachedEtlLocations(),function(value,key){
-
                     $scope.$parent.selectedSearchLocations.push(value.location_id);
                 });
             }else{
                 $scope.$parent.selectedSearchLocations=[];
                 angular.forEach($scope.selectedLocations.locations,function(value,key){
-                $scope.$parent.selectedSearchLocations.push(CachedDataService.getCachedEtlLocations()[value.uuId()].location_id);
+                    $scope.$parent.selectedSearchLocations.push(CachedDataService.getCachedEtlLocations()[value.uuId()].location_id);
                 });
             }
             $scope.$parent.startDate=$scope.startDate;
@@ -167,17 +182,6 @@
 
 
     }
-
-    function hivSummaryFilterLink(scope,element,attrs,vm){
-        // attrs.$observe('selectedLocation', onLocationUuidChanged);
-        // console.log('data-entry');
-        // function onLocationUuidChanged(newVal, oldVal) {
-        //     if (newVal && newVal !== "") {
-
-        //     }
-        // }
-    }
-
 
 
 })();
