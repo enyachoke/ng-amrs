@@ -33,7 +33,7 @@
         $scope.searchString = '';
         $scope.visitSearchString = '';
         $scope.appointmentSearchString = '';
-        $scope.visitsNotReturned = ''
+        $scope.visitsNotReturned = '';
         $scope.isBusy = false;
         $scope.isBusyVisits = false;
         $scope.experiencedLoadingError = false;
