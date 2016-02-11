@@ -86,7 +86,7 @@
         params: {
           startDate: formatedStartDate,
           endDate: formatedEndDate,
-          groupBy: 'groupByPerson,groupByd',
+          groupBy: 'groupByPerson,groupByd,groupByEncounter',
           locationUuids: $scope.locationUuid,
           report: 'attended'
         }
@@ -95,7 +95,7 @@
         params: {
           startDate: formatedStartDate,
           endDate: formatedEndDate,
-          groupBy: 'groupByd',
+          groupBy: 'groupByPerson,groupByd,groupByRtc',
           locationUuids: $scope.locationUuid,
           report: 'appointments'
         }
@@ -154,6 +154,8 @@
         }
         $scope.isBusy = false;
         $scope.events = events;
+      },function () {
+        $scope.experiencedLoadingError = true;
       });
     }
 

@@ -305,14 +305,7 @@
             $scope.allDataLoaded4AppointmentSchedule = true;
           }else{
             for (var e in appointmentSchedule.result) {
-              if($scope.appointmentPatients.length!=0){
-                $scope.appointmentPatients.push.apply($scope.appointmentPatients,
-                  new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]))
-
-              } else {
-                $scope.appointmentPatients.push(new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]));
-              }
-
+              $scope.appointmentPatients.push(new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]));
             }
           }
 
@@ -345,14 +338,7 @@
             $scope.allDataLoaded4DailyVisits = true;
           }else{
             for (var e in appointmentSchedule.result) {
-              if($scope.visitPatients.length!=0){
-                $scope.visitPatients.push.apply($scope.visitPatients,
-                  new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]))
-
-              } else {
-                $scope.visitPatients.push(new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]));
-              }
-
+              $scope.visitPatients.push(new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]));
             }
           }
 
@@ -386,12 +372,7 @@
               $scope.allDataLoaded4DailyNotReturnedVisits = true;
             }else{
               for (var e in appointmentSchedule.result) {
-                if($scope.notReturnedVisitPatients.length!=0){
-                  $scope.notReturnedVisitPatients.push.apply($scope.notReturnedVisitPatients,
-                    new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]))
-                } else {
-                  $scope.notReturnedVisitPatients.push(new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]));
-                }
+              $scope.notReturnedVisitPatients.push(new AppointmentScheduleModel.appointmentSchedule(appointmentSchedule.result[e]));
 
               }
             }
